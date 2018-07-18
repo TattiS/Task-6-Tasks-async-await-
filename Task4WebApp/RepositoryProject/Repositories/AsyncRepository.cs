@@ -53,7 +53,10 @@ namespace DALProject.Repositories
 		{
 			return await dataSet.ToListAsync();
 		}
-
+		public virtual List<TEntity> GetAll()
+		{
+			return dataSet.ToList();
+		}
 		public virtual async Task<TEntity> Insert(TEntity entity)
 		{
 			 await dataSet.AddAsync(entity);

@@ -88,7 +88,6 @@ namespace DALProject.UnitOfWork
 			}
 		}
 
-
 		public async Task<int> SaveChangesAsync()
 		{
 			return await mainDB.SaveChangesAsync();

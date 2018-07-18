@@ -153,5 +153,21 @@ namespace AirportService.Services
 			}
 		}
 
+		public async Task<List<FlightDTO>> GetWithDelay()
+		{
+			return await TaskHelper.RunAsync<FlightDTO>(()=>GetFlightsSync(),8000);
+		}
+
+		private List<FlightDTO> GetFlightsSync()
+		{
+			List<FlightDTO> result = null;
+			List<Flight> flights = unit.FlightsRepo.GetAll();
+			if (flights != null)
+			{
+				result = mapper.Map<List<Flight>, List<FlightDTO>>(flights) ?? throw new AutoMapperMappingException("Error: Can't map the flight into flightDTO");
+			}
+
+			return result;
+		}
 	}
 }
