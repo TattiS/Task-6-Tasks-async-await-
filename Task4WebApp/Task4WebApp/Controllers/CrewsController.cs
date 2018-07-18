@@ -1,33 +1,27 @@
-﻿using DTOLibrary.DTOs;
+﻿using System.Threading.Tasks;
+using DTOLibrary.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Task4WebApp.Controllers
 {
 	[Produces("application/json")]
-    [Route("api/departures/Crews")]
+    [Route("api/Crews")]
     public class CrewsController : Controller
     {
-		//private readonly AirportService.AirportService airport;
-		//private readonly AirportService.BLLService airport;
-		//public CrewsController(AirportService.BLLService service)
-		//{
-		//	this.airport = service;
+		private readonly AirportService.Services.AsyncCrewService airport;
 
-		//}
-		private readonly AirportService.Services.CrewService airport;
-
-		public CrewsController(AirportService.Services.CrewService service)
+		public CrewsController(AirportService.Services.AsyncCrewService service)
 		{
 			this.airport = service;
 
 		}
 		// GET: api/Crews
 		[HttpGet]
-        public IActionResult Get()
-        {
+		public async Task<IActionResult> Get()
+		{
 			try
 			{
-				var crews = this.airport.GetCrews();
+				var crews = await this.airport.GetCrews();
 				if (crews == null)
 				{
 					return NotFound();
@@ -41,13 +35,13 @@ namespace Task4WebApp.Controllers
 			}
 		}
 
-        // GET: api/Crews/5
-        [HttpGet("{id}", Name = "Get")]
-        public IActionResult Get(int id)
-        {
+		// GET: api/Crews/5
+		[HttpGet("{id}")]
+		public async Task<IActionResult> Get(int id)
+		{
 			try
 			{
-				var crew = this.airport.GetCrewById(id);
+				var crew = await this.airport.GetCrewById(id);
 				if (crew == null)
 				{
 					return NotFound();
@@ -60,18 +54,18 @@ namespace Task4WebApp.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
-        
-        // POST: api/Crews
-        [HttpPost("departure-id/{id}")]
-        public IActionResult Post(int departId, [FromBody]CrewDTO value)
-        {
+
+		// POST: api/Crews
+		[HttpPost("departure-id/{id}")]
+		public async Task<IActionResult> Post(int departId, [FromBody]CrewDTO value)
+		{
 			try
 			{
 				if (ModelState.IsValid)
 				{
-					airport.CreateCrew(departId, value);
+					var result = await airport.CreateCrew(departId, value);
 
-					return Ok();
+					return Ok(result);
 				}
 				return BadRequest(ModelState);
 			}
@@ -81,19 +75,19 @@ namespace Task4WebApp.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
-        
-        // PUT: api/Crews/5
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]CrewDTO value)
-        {
+
+		// PUT: api/Crews/5
+		[HttpPut("{id}")]
+		public async Task<IActionResult> Put(int id, [FromBody]CrewDTO value)
+		{
 			try
 			{
 				if (ModelState.IsValid)
 				{
 					value.Id = id;
-					airport.UpdateCrew(value);
+					var result = await airport.UpdateCrew(value);
 
-					return Ok();
+					return Ok(result);
 				}
 				return BadRequest(ModelState);
 			}
@@ -103,15 +97,15 @@ namespace Task4WebApp.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
-        
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
+
+		// DELETE: api/ApiWithActions/5
+		[HttpDelete("{id}")]
+		public async Task<IActionResult> Delete(int id)
+		{
 			try
 			{
-				airport.DeleteCrew(id);
-				return Ok();
+				var result = await airport.DeleteCrew(id);
+				return Ok(result);
 			}
 			catch (System.Exception ex)
 			{
@@ -119,5 +113,5 @@ namespace Task4WebApp.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
-    }
+	}
 }
