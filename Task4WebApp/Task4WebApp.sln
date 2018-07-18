@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AirportService", "AirportSe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTOLibrary", "DTOLibrary\DTOLibrary.csproj", "{DC750F03-4F4B-4B3A-B149-D2B232C38ADF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task4WebAppTests", "Task4WebAppTests\Task4WebAppTests.csproj", "{93B9C238-92EB-494E-98DE-C1BF812B1B7A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{DC750F03-4F4B-4B3A-B149-D2B232C38ADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC750F03-4F4B-4B3A-B149-D2B232C38ADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC750F03-4F4B-4B3A-B149-D2B232C38ADF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{93B9C238-92EB-494E-98DE-C1BF812B1B7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{93B9C238-92EB-494E-98DE-C1BF812B1B7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{93B9C238-92EB-494E-98DE-C1BF812B1B7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{93B9C238-92EB-494E-98DE-C1BF812B1B7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

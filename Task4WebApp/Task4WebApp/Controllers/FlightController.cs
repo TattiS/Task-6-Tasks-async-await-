@@ -58,6 +58,27 @@ namespace Task4WebApp.Controllers
 
 		}
 
+		// GET: api/Flight/delay/
+		[HttpGet("delay/")]
+		public async Task<IActionResult> GetWithDelay()
+		{
+			try
+			{
+				var flight = await this.airport.GetWithDelay();
+				if (flight == null)
+				{
+					return NotFound();
+				}
+				return Ok(flight);
+			}
+			catch (System.Exception ex)
+			{
+
+				return BadRequest(ex.Message);
+			}
+
+		}
+
 		// POST: api/Flight
 		[HttpPost]
 		public async Task<IActionResult> Post([FromBody]FlightDTO value)

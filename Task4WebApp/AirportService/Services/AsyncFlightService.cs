@@ -155,7 +155,7 @@ namespace AirportService.Services
 
 		public async Task<List<FlightDTO>> GetWithDelay()
 		{
-			return await TaskHelper.RunAsync<FlightDTO>(()=>GetFlightsSync(),8000);
+			return await TaskHelper.RunAsync<FlightDTO>(()=>GetFlightsSync(),800);
 		}
 
 		private List<FlightDTO> GetFlightsSync()
