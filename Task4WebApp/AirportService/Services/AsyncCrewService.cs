@@ -49,8 +49,8 @@ namespace AirportService.Services
 			var departure = await unit.DeparturesRepo.GetEntityById(departId);
 			if (departure != null)
 			{
-				var crew = mapper.Map<CrewDTO, Crew>(value);
-				var s = await unit.CrewRepo.Update(crew);
+				var crew = mapper.Map<CrewDTO, Crew>(value) ?? throw new AutoMapperMappingException("Error: Can't map the crewDTO into crew"); 
+				var s = await unit.CrewRepo.Insert(crew);
 				departure.CrewItem = crew ?? throw new Exception("Error: Can't add this crew to the departure!");
 				var d = await unit.DeparturesRepo.Update(departure);
 				await unit.SaveChangesAsync();

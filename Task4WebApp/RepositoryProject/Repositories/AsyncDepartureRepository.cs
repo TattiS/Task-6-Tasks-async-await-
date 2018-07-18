@@ -14,6 +14,17 @@ namespace DALProject.Repositories
 		{
 
 		}
+
+		public override async Task<List<Departure>> GetAllEntities()
+		{
+			return await dataSet.Include(p=>p.CrewItem).Include(p=>p.CrewItem.Stewardesses).Include(p=>p.PlaneItem).ToListAsync();
+		}
+
+		public override async Task<Departure> GetEntityById(object id)
+		{
+			return await dataSet.Include(p => p.CrewItem).Include(p => p.CrewItem.Stewardesses).Include(p => p.PlaneItem).FirstAsync(p => p.Id == (int)id);
+		}
+
 		public override async Task<List<Departure>> GetEntities(Expression<Func<Departure, bool>> filter = null, Func<IQueryable<Departure>, IOrderedQueryable<Departure>> orderBy = null, string includeProperties = "")
 		{
 			IQueryable<Departure> query = base.context.Set<Departure>().Include(a => a.CrewItem.Stewardesses).Include(a => a.CrewItem).Include(a => a.PlaneItem);

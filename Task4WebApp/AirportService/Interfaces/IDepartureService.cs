@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using DTOLibrary.DTOs;
 
 namespace AirportService.Interfaces
 {
-    interface IDepartureService
+	interface IDepartureService
     {
 		void CreateDeparture(DepartureDTO departure);
 		DepartureDTO GetDepartureById(int id);
