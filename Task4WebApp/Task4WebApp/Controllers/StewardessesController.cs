@@ -1,38 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DTOLibrary.DTOs;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Task4WebApp.Controllers
 {
-    [Produces("application/json")]
+	[Produces("application/json")]
     [Route("api/Stewardesses")]
     public class StewardessesController : Controller
     {
-		//private readonly AirportService.BLLService airport;
+		private readonly AirportService.Services.AsyncStewardessService airport;
 
-		//public StewardessesController(AirportService.BLLService service)
-		//{
-		//	this.airport = service;
-
-		//}
-		private readonly AirportService.Services.StewardessService airport;
-
-		public StewardessesController(AirportService.Services.StewardessService service)
+		public StewardessesController(AirportService.Services.AsyncStewardessService service)
 		{
 			this.airport = service;
 
 		}
 		// GET: api/Stewardesses
 		[HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
 			try
 			{
-				var result = airport.GetStewardesses();
+				var result = await airport.GetStewardesses();
 				if (result == null)
 				{
 					return NotFound();
@@ -48,11 +37,11 @@ namespace Task4WebApp.Controllers
 
         // GET: api/Stewardesses/5
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
 			try
 			{
-				var stewardess = this.airport.GetStewardessById(id);
+				var stewardess = await this.airport.GetStewardessById(id);
 				if (stewardess == null)
 				{
 					return NotFound();
@@ -68,15 +57,15 @@ namespace Task4WebApp.Controllers
         
         // POST: api/Stewardesses
         [HttpPost]
-        public IActionResult Post([FromBody]StewardessDTO value)
+        public async Task<IActionResult> Post([FromBody]StewardessDTO value)
         {
 			try
 			{
 				if (ModelState.IsValid)
 				{
-					airport.CreateStewardess(value);
+					var result = await airport.CreateStewardess(value);
 
-					return Ok();
+					return Ok(result);
 				}
 				return BadRequest();
 			}
@@ -89,16 +78,16 @@ namespace Task4WebApp.Controllers
         
         // PUT: api/Stewardesses/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]StewardessDTO value)
+        public async Task<IActionResult> Put(int id, [FromBody]StewardessDTO value)
         {
 			try
 			{
 				if (ModelState.IsValid)
 				{
 					value.Id = id;
-					airport.UpdateStewardess(value);
+					var result = await airport.UpdateStewardess(value);
 
-					return Ok();
+					return Ok(result);
 				}
 				return BadRequest();
 			}
@@ -112,12 +101,12 @@ namespace Task4WebApp.Controllers
 
 		// DELETE: api/ApiWithActions/5
 		[HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
 			try
 			{
-				airport.DeleteStewardess(id);
-				return Ok();
+				var result = await airport.DeleteStewardess(id);
+				return Ok(result);
 			}
 			catch (System.Exception ex)
 			{

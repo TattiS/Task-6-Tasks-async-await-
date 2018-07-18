@@ -1,38 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DTOLibrary.DTOs;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Task4WebApp.Controllers
 {
-    [Produces("application/json")]
-    [Route("api/Pilots")]
-    public class PilotsController : Controller
-    {
-		//private readonly AirportService.BLLService airport;
+	[Produces("application/json")]
+	[Route("api/Pilots")]
+	public class PilotsController : Controller
+	{
 
-		//public PilotsController(AirportService.BLLService service)
-		//{
-		//	this.airport = service;
+		private readonly AirportService.Services.AsyncPilotService airport;
 
-		//}
-		private readonly AirportService.Services.PilotService airport;
-
-		public PilotsController(AirportService.Services.PilotService service)
+		public PilotsController(AirportService.Services.AsyncPilotService service)
 		{
 			this.airport = service;
 
 		}
 		// GET: api/Pilots
 		[HttpGet]
-        public IActionResult Get()
-        {
+		public async Task<IActionResult> Get()
+		{
 			try
 			{
-				var result = airport.GetPilots();
+				var result = await airport.GetPilots();
 				if (result == null)
 				{
 					return NotFound();
@@ -46,13 +36,13 @@ namespace Task4WebApp.Controllers
 			}
 		}
 
-        // GET: api/Pilots/5
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
+		// GET: api/Pilots/5
+		[HttpGet("{id}")]
+		public async Task<IActionResult> Get(int id)
+		{
 			try
 			{
-				var pilot = this.airport.GetPilotById(id);
+				var pilot = await this.airport.GetPilotById(id);
 				if (pilot == null)
 				{
 					return NotFound();
@@ -65,16 +55,16 @@ namespace Task4WebApp.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
-        
-        // POST: api/Pilots
-        [HttpPost]
-        public IActionResult Post([FromBody]PilotDTO value)
-        {
+
+		// POST: api/Pilots
+		[HttpPost]
+		public async Task<IActionResult> Post([FromBody]PilotDTO value)
+		{
 			try
 			{
 				if (ModelState.IsValid)
 				{
-					airport.CreatePilot(value);
+					var result = await airport.CreatePilot(value);
 
 					return Ok();
 				}
@@ -86,17 +76,17 @@ namespace Task4WebApp.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
-        
-        // PUT: api/Pilots/5
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]PilotDTO value)
-        {
+
+		// PUT: api/Pilots/5
+		[HttpPut("{id}")]
+		public async Task<IActionResult> Put(int id, [FromBody]PilotDTO value)
+		{
 			try
 			{
 				if (ModelState.IsValid)
 				{
 					value.Id = id;
-					airport.UpdatePilot(value);
+					var result = await airport.UpdatePilot(value);
 
 					return Ok();
 				}
@@ -108,15 +98,15 @@ namespace Task4WebApp.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
-        
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
+
+		// DELETE: api/ApiWithActions/5
+		[HttpDelete("{id}")]
+		public async Task<IActionResult> Delete(int id)
+		{
 			try
 			{
-				airport.DeletePilot(id);
-				return Ok();
+				var result = await airport.DeletePilot(id);
+				return Ok(result);
 			}
 			catch (System.Exception ex)
 			{
@@ -124,5 +114,5 @@ namespace Task4WebApp.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
-    }
+	}
 }

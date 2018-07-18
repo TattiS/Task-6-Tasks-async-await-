@@ -1,8 +1,7 @@
 ﻿
+using System.Threading.Tasks;
 using DTOLibrary.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-
 
 namespace Task4WebApp.Controllers
 {
@@ -10,25 +9,21 @@ namespace Task4WebApp.Controllers
 	[Route("api/departures")]
 	public class DeparturesController : Controller
 	{
-		//private readonly AirportService.BLLService airport;
-		//public DeparturesController(AirportService.BLLService airportService)
-		//{
-		//	this.airport = airportService;
-		//}
-		private readonly AirportService.Services.DepartureService airport;
+		
+		private readonly AirportService.Services.AsyncDepartureService airport;
 
-		public DeparturesController(AirportService.Services.DepartureService service)
+		public DeparturesController(AirportService.Services.AsyncDepartureService service)
 		{
 			this.airport = service;
 
 		}
 		// GET: api/Departures
 		[HttpGet]
-		public IActionResult Get()
+		public async Task<IActionResult> Get()
 		{
 			try
 			{
-				var departures = this.airport.GetDepartures();
+				var departures = await this.airport.GetDepartures();
 				if (departures == null)
 				{
 					return NotFound();
@@ -45,11 +40,11 @@ namespace Task4WebApp.Controllers
 
 		// GET: api/Departures/5 {, Name = "Get"}
 		[HttpGet("{id}")]
-		public IActionResult Get(int id)
+		public async Task<IActionResult> Get(int id)
 		{
 			try
 			{
-				var departure = this.airport.GetDepartureById(id);
+				var departure = await this.airport.GetDepartureById(id);
 				if (departure == null)
 				{
 					return NotFound();
@@ -65,15 +60,15 @@ namespace Task4WebApp.Controllers
 
 		// POST: api/Departures
 		[HttpPost]
-		public IActionResult Post([FromBody]DepartureDTO value)
+		public async Task <IActionResult> Post([FromBody]DepartureDTO value)
 		{
 			try
 			{
 				if (ModelState.IsValid)
 				{
-					airport.CreateDeparture(value);
+					var result = await airport.CreateDeparture(value);
 
-					return Ok();
+					return Ok(result);
 				}
 				return BadRequest();
 			}
@@ -86,16 +81,16 @@ namespace Task4WebApp.Controllers
 
 		// PUT: api/Departures/5
 		[HttpPut("{id}")]
-		public IActionResult Put(int id, [FromBody]DepartureDTO value)
+		public async Task<IActionResult> Put(int id, [FromBody]DepartureDTO value)
 		{
 			try
 			{
 				if (ModelState.IsValid)
 				{
 					value.Id = id;
-					airport.UpdateDeparture(value);
+					var result = await airport.UpdateDeparture(value);
 
-					return Ok();
+					return Ok(result);
 				}
 				return BadRequest();
 			}
@@ -108,12 +103,12 @@ namespace Task4WebApp.Controllers
 
 		// DELETE: api/ApiWithActions/5
 		[HttpDelete("{id}")]
-		public IActionResult Delete(int id)
+		public async Task<IActionResult> Delete(int id)
 		{
 			try
 			{
-				airport.DeleteDeparture(id);
-				return Ok();
+				var result = await airport.DeleteDeparture(id);
+				return Ok(result);
 			}
 			catch (System.Exception ex)
 			{

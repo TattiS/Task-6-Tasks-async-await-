@@ -1,28 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DTOLibrary.DTOs;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Task4WebApp.Controllers
 {
-    [Produces("application/json")]
+	[Produces("application/json")]
     [Route("api/Tickets")]
     public class TicketsController : Controller
     {
-		//private readonly AirportService.BLLService airport;
+		
+		private readonly AirportService.Services.AsyncTicketService airport;
 
-		//public TicketsController(AirportService.BLLService service)
-		//{
-		//	this.airport = service;
-
-		//}
-
-		private readonly AirportService.Services.TicketService airport;
-
-		public TicketsController(AirportService.Services.TicketService service)
+		public TicketsController(AirportService.Services.AsyncTicketService service)
 		{
 			this.airport = service;
 
@@ -30,11 +19,11 @@ namespace Task4WebApp.Controllers
 
 		// GET: api/Tickets
 		[HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
 			try
 			{
-				var result = airport.GetTickets();
+				var result = await airport.GetTickets();
 				if (result == null)
 				{
 					return NotFound();
@@ -50,11 +39,11 @@ namespace Task4WebApp.Controllers
 
         // GET: api/Tickets/5
         [HttpGet("flight-id/{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
 			try
 			{
-				var ticket = this.airport.GetTicketsByFlightId(id);
+				var ticket = await this.airport.GetTicketsByFlightId(id);
 				if (ticket == null)
 				{
 					return NotFound();
@@ -70,15 +59,15 @@ namespace Task4WebApp.Controllers
         
         // POST: api/Tickets
         [HttpPost]
-        public IActionResult Post([FromBody]TicketDTO value)
+        public async Task<IActionResult> Post([FromBody]TicketDTO value)
         {
 			try
 			{
 				if (ModelState.IsValid)
 				{
-					airport.CreateTicket(value.FlightId, value);
+					var result = await airport.CreateTicket(value.FlightId, value);
 
-					return Ok();
+					return Ok(result);
 				}
 				return BadRequest();
 			}
@@ -91,16 +80,16 @@ namespace Task4WebApp.Controllers
         
         // PUT: api/Tickets/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]TicketDTO value)
+        public async Task<IActionResult> Put(int id, [FromBody]TicketDTO value)
         {
 			try
 			{
 				if (ModelState.IsValid)
 				{
 					value.Id = id;
-					airport.UpdateTicket(value);
+					var result = await airport.UpdateTicket(value);
 
-					return Ok();
+					return Ok(result);
 				}
 				return BadRequest();
 			}
@@ -113,11 +102,11 @@ namespace Task4WebApp.Controllers
         
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
 			try
 			{
-				airport.DeleteTicket(id);
+				var result = await airport.DeleteTicket(id);
 				return Ok();
 			}
 			catch (System.Exception ex)

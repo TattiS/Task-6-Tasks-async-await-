@@ -24,23 +24,18 @@ namespace Task4WebApp
         {
 
 			services.AddDbContext<MainDBContext>()
-				.AddScoped<UnitOfWork>()
-				.AddScoped<CrewService>()
-				.AddScoped<DepartureService>()
-				.AddScoped<FlightService>()
-				.AddScoped<PilotService>()
-				.AddScoped<PlaneService>()
-				.AddScoped<PlaneTypeService>()
-				.AddScoped<StewardessService>()
-				.AddScoped<TicketService>();
-
-			services.AddScoped<AsyncUnitOfWork>()
-					.AddScoped<AsyncCrewService>();
+				.AddScoped<AsyncUnitOfWork>()
+				.AddScoped<AsyncCrewService>()
+				.AddScoped<AsyncDepartureService>()
+				.AddScoped<AsyncFlightService>()
+				.AddScoped<AsyncPilotService>()
+				.AddScoped<AsyncPlaneService>()
+				.AddScoped<AsyncPlaneTypeService>()
+				.AddScoped<AsyncStewardessService>()
+				.AddScoped<AsyncTicketService>();
 				
 			services.AddMvc();
 			
-			
-
 
 
 		}

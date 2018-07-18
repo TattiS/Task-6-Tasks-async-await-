@@ -1,28 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DTOLibrary.DTOs;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Task4WebApp.Controllers
 {
-    [Produces("application/json")]
-    [Route("api/PlaneTypes")]
-    public class PlaneTypesController : Controller
-    {
-		//private readonly AirportService.BLLService airport;
+	[Produces("application/json")]
+	[Route("api/PlaneTypes")]
+	public class PlaneTypesController : Controller
+	{
 
-		//public PlaneTypesController(AirportService.BLLService service)
-		//{
-		//	this.airport = service;
+		private readonly AirportService.Services.AsyncPlaneTypeService airport;
 
-		//}
-
-		private readonly AirportService.Services.PlaneTypeService airport;
-
-		public PlaneTypesController(AirportService.Services.PlaneTypeService service)
+		public PlaneTypesController(AirportService.Services.AsyncPlaneTypeService service)
 		{
 			this.airport = service;
 
@@ -30,11 +19,11 @@ namespace Task4WebApp.Controllers
 
 		// GET: api/PlaneTypes
 		[HttpGet]
-        public IActionResult Get()
-        {
+		public async Task<IActionResult> Get()
+		{
 			try
 			{
-				var result = airport.GetPlaneTypes();
+				var result = await airport.GetPlaneTypes();
 				if (result == null)
 				{
 					return NotFound();
@@ -48,13 +37,13 @@ namespace Task4WebApp.Controllers
 			}
 		}
 
-        // GET: api/PlaneTypes/5
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
+		// GET: api/PlaneTypes/5
+		[HttpGet("{id}")]
+		public async Task<IActionResult> Get(int id)
+		{
 			try
 			{
-				var type = this.airport.GetPlaneTypeById(id);
+				var type = await this.airport.GetPlaneTypeById(id);
 				if (type == null)
 				{
 					return NotFound();
@@ -67,18 +56,18 @@ namespace Task4WebApp.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
-        
-        // POST: api/PlaneTypes
-        [HttpPost]
-        public IActionResult Post([FromBody]PlaneTypeDTO value)
-        {
+
+		// POST: api/PlaneTypes
+		[HttpPost]
+		public async Task<IActionResult> Post([FromBody]PlaneTypeDTO value)
+		{
 			try
 			{
 				if (ModelState.IsValid)
 				{
-					airport.CreatePlaneType(value);
+					var result = await airport.CreatePlaneType(value);
 
-					return Ok();
+					return Ok(result);
 				}
 				return BadRequest(ModelState);
 			}
@@ -88,19 +77,19 @@ namespace Task4WebApp.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
-        
-        // PUT: api/PlaneTypes/5
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]PlaneTypeDTO value)
-        {
+
+		// PUT: api/PlaneTypes/5
+		[HttpPut("{id}")]
+		public async Task<IActionResult> Put(int id, [FromBody]PlaneTypeDTO value)
+		{
 			try
 			{
 				if (ModelState.IsValid)
 				{
 					value.Id = id;
-					airport.UpdateType(value);
+					var result = await airport.UpdateType(value);
 
-					return Ok();
+					return Ok(result);
 				}
 				return BadRequest(ModelState);
 			}
@@ -110,15 +99,15 @@ namespace Task4WebApp.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
-        
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
+
+		// DELETE: api/ApiWithActions/5
+		[HttpDelete("{id}")]
+		public async Task<IActionResult> Delete(int id)
+		{
 			try
 			{
-				airport.DeletePlaneType(id);
-				return Ok();
+				var result = await airport.DeletePlaneType(id);
+				return Ok(result);
 			}
 			catch (System.Exception ex)
 			{
@@ -126,5 +115,5 @@ namespace Task4WebApp.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
-    }
+	}
 }

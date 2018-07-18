@@ -71,7 +71,7 @@ namespace AirportService.Services
 
 		public async Task<List<PlaneDTO>> GetPlanes()
 		{
-			var departures = await unit.DeparturesRepo.GetEntities(includeProperties: "CrewItem,PlaneItem", filter:( p => p.PlaneItem != null));
+			var departures = await unit.DeparturesRepo.GetEntities(includeProperties: "CrewItem,PlaneItem,TypeOfPlane", filter:( p => p.PlaneItem != null));
 			List<Plane> planes = new List<Plane>();
 			if (departures != null && departures.Count > 0)
 			{
