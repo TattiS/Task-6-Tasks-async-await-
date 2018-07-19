@@ -169,29 +169,29 @@ namespace AirportService.Services
 			return result;
 		}
 
-		public  Task<List<FlightDTO>> RunAsync(int delay = 15000)
+		public  Task<List<FlightDTO>> RunAsync(int delay = 5000)
 		{
 			if (GetFlightsSync() == null) throw new ArgumentNullException("TaskHelper");
 			var tcs = new TaskCompletionSource<List<FlightDTO>>();
 
 			Timer timer = new Timer(delay);
-			timer.Start();
-			timer.Elapsed += (o, e) =>
-			{
-				try
+			
+				timer.Start();
+				timer.Elapsed += (o, e) =>
 				{
-					List<FlightDTO> result = GetFlightsSync();
-					tcs.SetResult(result);
-				}
-				catch (Exception exc)
-				{
-					tcs.SetException(exc);
-				}
+					try
+					{
+						List<FlightDTO> result = GetFlightsSync();
+						tcs.SetResult(result);
+						timer.Stop();
+					}
+					catch (Exception exc)
+					{
+						tcs.SetException(exc);
+					}
 
-			};
-
-
-
+				};
+			
 			return tcs.Task;
 		}
 	}

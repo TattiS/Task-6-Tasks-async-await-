@@ -21,6 +21,7 @@ namespace AirportService
 				{
 					List<TEntity> result = function();
 					tcs.SetResult(result);
+					timer.Stop();
 				}
 				catch (Exception exc)
 				{
