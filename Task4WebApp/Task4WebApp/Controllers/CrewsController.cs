@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using AirportService.Services;
 using DTOLibrary.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
@@ -105,6 +106,25 @@ namespace Task4WebApp.Controllers
 			try
 			{
 				var result = await airport.DeleteCrew(id);
+				return Ok(result);
+			}
+			catch (System.Exception ex)
+			{
+
+				return BadRequest(ex.Message);
+			}
+		}
+
+		// LOad: api/ApiWithActions/5
+		[HttpGet("load/")]
+		public async Task<IActionResult> Load(int id)
+		{
+			try
+			{
+
+				var service = new QueryService();
+				var result = await service.GetCrews();
+
 				return Ok(result);
 			}
 			catch (System.Exception ex)
