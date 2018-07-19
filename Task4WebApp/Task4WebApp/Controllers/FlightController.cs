@@ -64,7 +64,7 @@ namespace Task4WebApp.Controllers
 		{
 			try
 			{
-				var flight = await this.airport.GetWithDelay();
+				var flight = await this.airport.RunAsync();
 				if (flight == null)
 				{
 					return NotFound();

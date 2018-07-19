@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using System.Threading.Tasks;
+using System.Timers;
 using AirportService.Interfaces;
 using AutoMapper;
 using DALProject.Interefaces;
@@ -153,10 +155,7 @@ namespace AirportService.Services
 			}
 		}
 
-		public async Task<List<FlightDTO>> GetWithDelay()
-		{
-			return await TaskHelper.RunAsync<FlightDTO>(()=>GetFlightsSync(),800);
-		}
+
 
 		private List<FlightDTO> GetFlightsSync()
 		{
@@ -168,6 +167,32 @@ namespace AirportService.Services
 			}
 
 			return result;
+		}
+
+		public  Task<List<FlightDTO>> RunAsync(int delay = 15000)
+		{
+			if (GetFlightsSync() == null) throw new ArgumentNullException("TaskHelper");
+			var tcs = new TaskCompletionSource<List<FlightDTO>>();
+
+			Timer timer = new Timer(delay);
+			timer.Start();
+			timer.Elapsed += (o, e) =>
+			{
+				try
+				{
+					List<FlightDTO> result = GetFlightsSync();
+					tcs.SetResult(result);
+				}
+				catch (Exception exc)
+				{
+					tcs.SetException(exc);
+				}
+
+			};
+
+
+
+			return tcs.Task;
 		}
 	}
 }

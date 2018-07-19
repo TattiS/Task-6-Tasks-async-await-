@@ -14,6 +14,7 @@ namespace AirportService
 			var tcs = new TaskCompletionSource<List<TEntity>>();
 
 			Timer timer = new Timer(delay);
+			timer.Start();
 			timer.Elapsed += (o,e) =>
 			{
 				try
