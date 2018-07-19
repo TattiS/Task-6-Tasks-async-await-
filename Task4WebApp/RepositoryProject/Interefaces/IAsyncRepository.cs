@@ -15,5 +15,6 @@ namespace DALProject.Interefaces
 		Task<TEntity> Update(TEntity entityToUpdate);
 		Task<int> Delete(int id);
 		Task<int> Delete(TEntity entityToDelete);
+		List<TEntity> GetAll();
     }
 }

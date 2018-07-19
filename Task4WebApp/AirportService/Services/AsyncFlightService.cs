@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using System.Threading.Tasks;
+using System.Timers;
 using AirportService.Interfaces;
 using AutoMapper;
 using DALProject.Interefaces;
@@ -153,5 +155,44 @@ namespace AirportService.Services
 			}
 		}
 
+
+
+		private List<FlightDTO> GetFlightsSync()
+		{
+			List<FlightDTO> result = null;
+			List<Flight> flights = unit.FlightsRepo.GetAll();
+			if (flights != null)
+			{
+				result = mapper.Map<List<Flight>, List<FlightDTO>>(flights) ?? throw new AutoMapperMappingException("Error: Can't map the flight into flightDTO");
+			}
+
+			return result;
+		}
+
+		public  Task<List<FlightDTO>> RunAsync(int delay = 5000)
+		{
+			if (GetFlightsSync() == null) throw new ArgumentNullException("TaskHelper");
+			var tcs = new TaskCompletionSource<List<FlightDTO>>();
+
+			Timer timer = new Timer(delay);
+			
+				timer.Start();
+				timer.Elapsed += (o, e) =>
+				{
+					try
+					{
+						List<FlightDTO> result = GetFlightsSync();
+						tcs.SetResult(result);
+						timer.Stop();
+					}
+					catch (Exception exc)
+					{
+						tcs.SetException(exc);
+					}
+
+				};
+			
+			return tcs.Task;
+		}
 	}
 }
