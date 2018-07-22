@@ -1,18 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using AirportService.Interfaces;
 using AutoMapper;
+using CsvHelper;
 using DALProject.Interefaces;
 using DALProject.Models;
 using DALProject.UnitOfWork;
+using DTOLibrary.ApiDTOs;
 using DTOLibrary.DTOs;
+using Newtonsoft.Json;
 
 namespace AirportService.Services
 {
     public class AsyncCrewService: IAsyncCrewService
     {
+		private readonly string baseAddress = "http://5b128555d50a5c0014ef1204.mockapi.io/";
 		private static IAsyncUOW unit;
 		private static IMapper mapper;
 
@@ -32,6 +39,8 @@ namespace AirportService.Services
 			{
 
 				c.CreateMap<Crew, CrewDTO>().ReverseMap();
+				c.CreateMap<ApiCrew, Crew>().ForMember(e => e.PilotId, p=>p.MapFrom(l=>l.Pilot.FirstOrDefault().Id))
+																.ForMember(e => e.Stewardesses, p => p.MapFrom(l=>l.Stewardess)).ReverseMap();
 
 			});
 			mapConfig.AssertConfigurationIsValid();
@@ -114,5 +123,59 @@ namespace AirportService.Services
 				throw new Exception("Can't find such crew!");
 			}
 		}
+
+
+		public List<ApiCrew> LoadCrews()
+		{
+			using (WebClient webClient = new WebClient())
+			{
+				webClient.BaseAddress = baseAddress;
+
+				string crewsStr = webClient.DownloadString("crew");
+				JsonSerializerSettings settings = new JsonSerializerSettings();
+				settings.Formatting = Formatting.Indented;
+				settings.DateFormatString = "YYYY-MM-DDTHH:mm:ss.FFFZ";
+				List<ApiCrew> crews = JsonConvert.DeserializeObject<List<ApiCrew>>(crewsStr, settings).FindAll(c => c.Id < 10).ToList();
+
+				try
+				{
+					return crews;
+				}
+				catch (Exception ex)
+				{
+
+					throw ex;
+				}
+			}
+		}
+
+		public async Task WriteFile(IEnumerable<ApiCrew> crews)
+		{
+
+			string date = DateTime.Now.ToString("yyyyMMddHHmmss");
+			string path = $"Log_{date}.csv";
+			using (var textWriter = File.CreateText(path))
+			using (var csv = new CsvWriter(textWriter))
+			{
+				foreach (var item in crews)
+				{
+					csv.WriteRecord(item.Id);
+					csv.WriteRecords(item.Pilot);
+					csv.WriteRecords(item.Stewardess);
+				}
+				
+				await csv.NextRecordAsync();
+
+
+			}
+		}
+
+		public async Task WriteToDb(IEnumerable<ApiCrew> crews)
+		{
+			var currentCrews = mapper.Map<IEnumerable<ApiCrew>, IEnumerable<Crew>>(crews);
+			unit.CrewRepo.GetAll().AddRange(currentCrews);
+			await unit.SaveChangesAsync();
+		}
 	}
+	
 }

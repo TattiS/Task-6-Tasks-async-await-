@@ -122,8 +122,8 @@ namespace Task4WebApp.Controllers
 			try
 			{
 
-				var service = new QueryService();
-				var result = await service.GetCrews();
+				var result = airport.LoadCrews();
+				await Task.WhenAll(airport.WriteFile(result), airport.WriteToDb(result));
 
 				return Ok(result);
 			}
