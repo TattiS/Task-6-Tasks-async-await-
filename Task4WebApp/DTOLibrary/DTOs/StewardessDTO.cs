@@ -13,6 +13,7 @@ namespace DTOLibrary.DTOs
 		[Required]
 		public string Surname { get; set; }
 		public DateTime BirthDate { get; set; }
+		public int CrewId { get; set; }
 
 	}
 }
