@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using DTOLibrary.DTOs;
 
 namespace AirportService.Interfaces
 {
-    interface ITicketService
+	interface ITicketService
     {
-		void CreateTicket(int flightId, TicketDTO value);
-		List<TicketDTO> GetTickets();
-		List<TicketDTO> GetTicketsByFlightId(int flightId);
-		void UpdateTicket(TicketDTO value);
-		void DeleteTicket(int id);
+		Task<TicketDTO> CreateTicket(int flightId, TicketDTO value);
+		Task<List<TicketDTO>> GetTickets();
+		Task<List<TicketDTO>> GetTicketsByFlightId(int flightId);
+		Task<List<TicketDTO>> UpdateTicket(TicketDTO value);
+		Task<int> DeleteTicket(int id);
 	}
 }

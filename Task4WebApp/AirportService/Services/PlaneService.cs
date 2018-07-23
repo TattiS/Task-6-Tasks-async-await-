@@ -11,12 +11,12 @@ using DTOLibrary.DTOs;
 
 namespace AirportService.Services
 {
-    public class AsyncPlaneService:IAsyncPlaneService
+    public class PlaneService:IPlaneService
     {
 		private static IAsyncUOW unit;
 		private static IMapper mapper;
 
-		public AsyncPlaneService(AsyncUnitOfWork unitOfWork)
+		public PlaneService(AsyncUnitOfWork unitOfWork)
 		{
 			unit = unitOfWork;
 			if (mapper == null)

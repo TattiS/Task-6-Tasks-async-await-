@@ -9,9 +9,9 @@ namespace Task4WebApp.Controllers
     public class TicketsController : Controller
     {
 		
-		private readonly AirportService.Services.AsyncTicketService airport;
+		private readonly AirportService.Services.TicketService airport;
 
-		public TicketsController(AirportService.Services.AsyncTicketService service)
+		public TicketsController(AirportService.Services.TicketService service)
 		{
 			this.airport = service;
 

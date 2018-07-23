@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using AirportService.Interfaces;
 using AutoMapper;
@@ -11,12 +10,12 @@ using DTOLibrary.DTOs;
 
 namespace AirportService.Services
 {
-    public class AsyncTicketService:IAsyncTicketService
+	public class TicketService:ITicketService
     {
 		private static IAsyncUOW unit;
 		private static IMapper mapper;
 
-		public AsyncTicketService(AsyncUnitOfWork unitOfWork)
+		public TicketService(AsyncUnitOfWork unitOfWork)
 		{
 			unit = unitOfWork;
 			if (mapper == null)

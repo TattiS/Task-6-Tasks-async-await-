@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using DTOLibrary.DTOs;
 
 namespace AirportService.Interfaces
 {
 	interface IDepartureService
     {
-		void CreateDeparture(DepartureDTO departure);
-		DepartureDTO GetDepartureById(int id);
-		List<DepartureDTO> GetDepartures();
-		void UpdateDeparture(DepartureDTO departure);
-		void DeleteDeparture(int id);
-
+		Task<DepartureDTO> CreateDeparture(DepartureDTO departure);
+		Task<DepartureDTO> GetDepartureById(int id);
+		Task<List<DepartureDTO>> GetDepartures();
+		Task<DepartureDTO> UpdateDeparture(DepartureDTO departure);
+		Task<int> DeleteDeparture(int id);
 	}
 }

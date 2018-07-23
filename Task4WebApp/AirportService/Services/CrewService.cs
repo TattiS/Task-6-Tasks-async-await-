@@ -16,13 +16,13 @@ using Newtonsoft.Json;
 
 namespace AirportService.Services
 {
-	public class AsyncCrewService: IAsyncCrewService
+	public class CrewService: ICrewService
     {
 		private readonly string baseAddress = "http://5b128555d50a5c0014ef1204.mockapi.io/";
 		private static IAsyncUOW unit;
 		private static IMapper mapper;
 
-		public AsyncCrewService(AsyncUnitOfWork unitOfWork)
+		public CrewService(AsyncUnitOfWork unitOfWork)
 		{
 			unit = unitOfWork;
 			if (mapper == null)
