@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using AirportService.Interfaces;
 using AutoMapper;
@@ -17,7 +16,7 @@ using Newtonsoft.Json;
 
 namespace AirportService.Services
 {
-    public class AsyncCrewService: IAsyncCrewService
+	public class AsyncCrewService: IAsyncCrewService
     {
 		private readonly string baseAddress = "http://5b128555d50a5c0014ef1204.mockapi.io/";
 		private static IAsyncUOW unit;
@@ -78,6 +77,10 @@ namespace AirportService.Services
 		public async Task<CrewDTO> GetCrewById(int id)
 		{
 			var crew = await unit.CrewRepo.GetEntityById(id);
+			if (crew == null)
+			{
+				throw new ArgumentOutOfRangeException(nameof(crew));
+			}
 			var result = mapper.Map<Crew, CrewDTO>(crew)?? throw new AutoMapperMappingException("Error: Can't map the crew into crewDTO");
 			return result;
 		}

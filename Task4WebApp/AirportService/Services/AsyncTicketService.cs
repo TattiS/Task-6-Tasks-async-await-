@@ -84,6 +84,10 @@ namespace AirportService.Services
 		{
 			var flights = await unit.FlightsRepo.GetEntities(includeProperties: "Tickets", filter:(p => p.Id == flightId));
 			var tickets = flights.Find(p => p.Id==flightId).Tickets;
+			if (tickets == null && tickets.Count <= 0)
+			{
+				throw new ArgumentOutOfRangeException(nameof(tickets));
+			}
 			return mapper.Map<List<Ticket>, List<TicketDTO>>(tickets) ?? throw new AutoMapperMappingException("Error: Can't map the Ticket into TicketDTO");
 		}
 

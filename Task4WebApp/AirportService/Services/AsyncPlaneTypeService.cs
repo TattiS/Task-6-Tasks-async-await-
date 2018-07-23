@@ -60,7 +60,7 @@ namespace AirportService.Services
 			PlaneType type = await unit.PlaneTypesRepo.GetEntityById(id);
 			if (type == null)
 			{
-				return null;
+				throw new ArgumentOutOfRangeException(nameof(PlaneType));
 			}
 			return mapper.Map<PlaneType, PlaneTypeDTO>(type) ?? throw new AutoMapperMappingException("Error: Can't map the planeType into planeTypeDTO");
 		}

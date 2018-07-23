@@ -23,8 +23,8 @@ namespace Task4WebApp
         public void ConfigureServices(IServiceCollection services)
         {
 
-			services.AddDbContext<MainDBContext>()
-				.AddScoped<AsyncUnitOfWork>()
+			services.AddDbContext<MainDBContext>();
+			services.AddScoped<AsyncUnitOfWork>()
 				.AddScoped<AsyncCrewService>()
 				.AddScoped<AsyncDepartureService>()
 				.AddScoped<AsyncFlightService>()

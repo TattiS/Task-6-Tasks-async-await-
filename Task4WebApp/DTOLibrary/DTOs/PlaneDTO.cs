@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace DTOLibrary.DTOs
 {
-    public class PlaneDTO
+	public class PlaneDTO
     {
 		public int Id { get; set; }
 		[Required]

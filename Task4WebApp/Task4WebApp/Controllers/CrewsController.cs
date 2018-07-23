@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using AirportService.Services;
+﻿using System.Threading.Tasks;
 using DTOLibrary.DTOs;
 using Microsoft.AspNetCore.Mvc;
 

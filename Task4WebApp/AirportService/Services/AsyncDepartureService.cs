@@ -60,7 +60,7 @@ namespace AirportService.Services
 			Departure departure = await unit.DeparturesRepo.GetEntityById(id);
 			if (departure == null)
 			{
-				return null;
+				throw new ArgumentOutOfRangeException(nameof(departure));
 			}
 			return mapper.Map<Departure, DepartureDTO>(departure) ?? throw new AutoMapperMappingException("Error: Can't map the departure into departureDTO");
 		}

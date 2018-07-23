@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace DTOLibrary.DTOs
 {
-    public class FlightDTO
+	public class FlightDTO
     {
 		public int Id { get; set; }
 		[Required]

@@ -77,7 +77,7 @@ namespace AirportService.Services
 			Pilot pilot = await unit.PilotsRepo.GetEntityById(id);
 			if (pilot == null)
 			{
-				return null;
+				throw new ArgumentOutOfRangeException(nameof(pilot));
 			}
 			return mapper.Map<Pilot, PilotDTO>(pilot) ?? throw new AutoMapperMappingException("Error: Can't map the pilot into pilotDTO");
 		}

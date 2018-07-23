@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DALProject.Models;
 
 namespace DTOLibrary.ApiDTOs
 {
-    public class ApiPilot 
+	public class ApiPilot 
     {
 		public int Id { get; set; }
 		public string FirstName { get; set; }
