@@ -39,7 +39,11 @@ namespace AirportService.Services
 			{
 
 				c.CreateMap<Crew, CrewDTO>().ReverseMap();
-				c.CreateMap<ApiCrew, Crew>().ForMember(e => e.PilotId, p=>p.MapFrom(l=>l.Pilot.FirstOrDefault().Id))
+				c.CreateMap<ApiStewardess, Stewardess>().ForMember(e => e.Name, p => p.MapFrom(l => l.FirstName))
+																					.ForMember(e => e.Surname, p => p.MapFrom(l => l.LastName))
+																					.ForMember(e=> e.Id, p=>p.UseValue(0)).ReverseMap();
+				c.CreateMap<ApiCrew, Crew>().ForMember(e => e.Id, p => p.UseValue(0))
+																.ForMember(e => e.PilotId, p=>p.MapFrom(l=>l.Pilot.FirstOrDefault().Id))
 																.ForMember(e => e.Stewardesses, p => p.MapFrom(l=>l.Stewardess)).ReverseMap();
 
 			});
@@ -173,7 +177,7 @@ namespace AirportService.Services
 		public async Task WriteToDb(IEnumerable<ApiCrew> crews)
 		{
 			var currentCrews = mapper.Map<IEnumerable<ApiCrew>, IEnumerable<Crew>>(crews);
-			unit.CrewRepo.GetAll().AddRange(currentCrews);
+			await unit.CrewRepo.AddRange(currentCrews.ToList());
 			await unit.SaveChangesAsync();
 		}
 	}

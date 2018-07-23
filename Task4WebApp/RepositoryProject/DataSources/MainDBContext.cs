@@ -21,19 +21,15 @@ namespace DALProject
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MyTestDatabase;Trusted_Connection=True;Integrated Security=True;", b => b.MigrationsAssembly("Task4WebApp"));
+			optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MyTestDatabase;Trusted_Connection=True;Integrated Security=True;");
 			optionsBuilder.EnableSensitiveDataLogging(true);
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			//modelBuilder.Entity<Flight>()
-			//	.HasMany<Ticket>(f => f.Tickets)
-			//	.WithOne("CurrentFlight")
-			//	.HasForeignKey(t => t.Id)
-			//	.OnDelete(DeleteBehavior.Cascade);
-
-
+			modelBuilder.Entity<Stewardess>().Property(p => p.Id).ValueGeneratedOnAdd();
+			modelBuilder.Entity<Crew>().Property(p => p.Id).ValueGeneratedOnAdd();
+			
 
 
 			modelBuilder.Entity<Pilot>().HasData(

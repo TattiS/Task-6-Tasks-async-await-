@@ -47,5 +47,10 @@ namespace DALProject.Repositories
 			}
 		}
 
+		public async Task AddRange(List<Crew> crews)
+		{
+			await dataSet.AddRangeAsync(crews);
+			await base.context.SaveChangesAsync();
+		}
 	}
 }

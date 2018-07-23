@@ -14,7 +14,7 @@ namespace DALProject.UnitOfWork
 		private IAsyncRepository<Stewardess> stewardesses;
 		private IAsyncRepository<Pilot> pilots;
 		private IAsyncRepository<PlaneType> planeTypes;
-		private IAsyncRepository<Crew> crews;
+		private AsyncCrewRepository crews;
 
 		public AsyncUnitOfWork(MainDBContext dBContext)
 		{
@@ -76,7 +76,7 @@ namespace DALProject.UnitOfWork
 				return this.planeTypes;
 			}
 		}
-		public IAsyncRepository<Crew> CrewRepo
+		public AsyncCrewRepository CrewRepo
 		{
 			get
 			{
@@ -90,7 +90,16 @@ namespace DALProject.UnitOfWork
 
 		public async Task<int> SaveChangesAsync()
 		{
-			return await mainDB.SaveChangesAsync();
+			try
+			{
+				return await mainDB.SaveChangesAsync();
+			}
+			catch (Exception ex)
+			{
+
+				throw ex;
+			}
+		
 		}
 
 
