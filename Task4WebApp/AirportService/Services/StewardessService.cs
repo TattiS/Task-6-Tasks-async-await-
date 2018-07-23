@@ -10,12 +10,12 @@ using DTOLibrary.DTOs;
 
 namespace AirportService.Services
 {
-	public class AsyncStewardessService:IAsyncStewardessService
+	public class StewardessService:IStewardessService
     {
 		private static IAsyncUOW unit;
 		private static IMapper mapper;
 
-		public AsyncStewardessService(AsyncUnitOfWork unitOfWork)
+		public StewardessService(AsyncUnitOfWork unitOfWork)
 		{
 			unit = unitOfWork;
 			if (mapper == null)

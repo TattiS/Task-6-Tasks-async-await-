@@ -1,6 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using DALProject.Models;
 
 namespace DTOLibrary.ApiDTOs
 {

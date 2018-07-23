@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using AirportService.Services;
+﻿using System.Threading.Tasks;
 using DTOLibrary.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,9 +8,9 @@ namespace Task4WebApp.Controllers
     [Route("api/Crews")]
     public class CrewsController : Controller
     {
-		private readonly AirportService.Services.AsyncCrewService airport;
+		private readonly AirportService.Services.CrewService airport;
 
-		public CrewsController(AirportService.Services.AsyncCrewService service)
+		public CrewsController(AirportService.Services.CrewService service)
 		{
 			this.airport = service;
 

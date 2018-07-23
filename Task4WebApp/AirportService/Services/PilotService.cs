@@ -10,12 +10,12 @@ using DTOLibrary.DTOs;
 
 namespace AirportService.Services
 {
-	public class AsyncPilotService : IAsyncPilotService
+	public class PilotService : IPilotService
     {
 		private static IAsyncUOW unit;
 		private static IMapper mapper;
 
-		public AsyncPilotService(AsyncUnitOfWork unitOfWork)
+		public PilotService(AsyncUnitOfWork unitOfWork)
 		{
 			unit = unitOfWork;
 			if (mapper == null)
@@ -77,7 +77,7 @@ namespace AirportService.Services
 			Pilot pilot = await unit.PilotsRepo.GetEntityById(id);
 			if (pilot == null)
 			{
-				return null;
+				throw new ArgumentOutOfRangeException(nameof(pilot));
 			}
 			return mapper.Map<Pilot, PilotDTO>(pilot) ?? throw new AutoMapperMappingException("Error: Can't map the pilot into pilotDTO");
 		}

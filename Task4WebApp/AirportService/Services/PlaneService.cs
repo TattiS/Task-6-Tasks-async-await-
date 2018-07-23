@@ -11,12 +11,12 @@ using DTOLibrary.DTOs;
 
 namespace AirportService.Services
 {
-    public class AsyncPlaneService:IAsyncPlaneService
+    public class PlaneService:IPlaneService
     {
 		private static IAsyncUOW unit;
 		private static IMapper mapper;
 
-		public AsyncPlaneService(AsyncUnitOfWork unitOfWork)
+		public PlaneService(AsyncUnitOfWork unitOfWork)
 		{
 			unit = unitOfWork;
 			if (mapper == null)
@@ -65,8 +65,13 @@ namespace AirportService.Services
 
 		public async Task<PlaneDTO> GetPlaneById(int id)
 		{
-			var result = await GetPlanes();
-			return result.Find(p => p.Id == id);
+			var  subresult = await GetPlanes();
+			var result = subresult.Find(p => p.Id == id);
+			if (result == null)
+			{
+				throw new ArgumentOutOfRangeException(nameof(Plane));
+			}
+			return result;
 		}
 
 		public async Task<List<PlaneDTO>> GetPlanes()

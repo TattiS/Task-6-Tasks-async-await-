@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 using DTOLibrary.DTOs;
 
 namespace AirportService.Interfaces
 {
-    interface IFlightService
+	interface IFlightService
     {
-		void CreateFlight(FlightDTO flight);
-		FlightDTO GetFlightById(int id);
-		List<FlightDTO> GetFlights();
-		List<FlightDTO> GetFlightsByArrival(DateTime time);
-		List<FlightDTO> GetFlightsByDeparture(DateTime time);
-		List<FlightDTO> GetFlightsByDestination(string destination);
-		List<FlightDTO> GetFlightsByPoint(string departurePoint);
-		void UpdateFlight(FlightDTO flight);
-		void DeleteFlight(int id);
+		Task<FlightDTO> CreateFlight(FlightDTO flight);
+		Task<FlightDTO> GetFlightById(int id);
+		Task<List<FlightDTO>> GetFlights();
+		Task<List<FlightDTO>> GetFlightsByArrival(DateTime time);
+		Task<List<FlightDTO>> GetFlightsByDeparture(DateTime time);
+		Task<List<FlightDTO>> GetFlightsByDestination(string destination);
+		Task<List<FlightDTO>> GetFlightsByPoint(string departurePoint);
+		Task<FlightDTO> UpdateFlight(FlightDTO flight);
+		Task<int> DeleteFlight(int id);
 		
 	}
 }

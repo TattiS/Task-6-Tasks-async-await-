@@ -10,12 +10,12 @@ using DTOLibrary.DTOs;
 
 namespace AirportService.Services
 {
-	public class AsyncPlaneTypeService:IAsyncPlaneTypeService
+	public class PlaneTypeService:IPlaneTypeService
     {
 		private static IAsyncUOW unit;
 		private static IMapper mapper;
 
-		public AsyncPlaneTypeService(AsyncUnitOfWork unitOfWork)
+		public PlaneTypeService(AsyncUnitOfWork unitOfWork)
 		{
 			unit = unitOfWork;
 			if (mapper == null)
@@ -60,7 +60,7 @@ namespace AirportService.Services
 			PlaneType type = await unit.PlaneTypesRepo.GetEntityById(id);
 			if (type == null)
 			{
-				return null;
+				throw new ArgumentOutOfRangeException(nameof(PlaneType));
 			}
 			return mapper.Map<PlaneType, PlaneTypeDTO>(type) ?? throw new AutoMapperMappingException("Error: Can't map the planeType into planeTypeDTO");
 		}

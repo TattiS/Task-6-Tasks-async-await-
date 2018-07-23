@@ -12,12 +12,12 @@ using DTOLibrary.DTOs;
 
 namespace AirportService.Services
 {
-	public class AsyncFlightService : IAsyncFlightService
+	public class FlightService : IFlightService
 	{
 		private static IAsyncUOW unit;
 		private static IMapper mapper;
 
-		public AsyncFlightService(AsyncUnitOfWork unitOfWork)
+		public FlightService(AsyncUnitOfWork unitOfWork)
 		{
 			unit = unitOfWork;
 			if (mapper == null)
@@ -61,12 +61,12 @@ namespace AirportService.Services
 		public async Task<FlightDTO> GetFlightById(int id)
 		{
 			var subresult = await unit.FlightsRepo.GetEntities(includeProperties: "Tickets");
-
-			if (subresult == null || subresult.Count <= 0)
-			{
-				return null;
-			}
 			var result = subresult.Find(p => p.Id == id);
+			if (subresult == null || subresult.Count <= 0 || result == null)
+			{
+				throw new ArgumentOutOfRangeException(nameof(Flight));
+			}
+			
 			return mapper.Map<Flight, FlightDTO>(result) ?? throw new AutoMapperMappingException("Error: Can't map the flight into flightDTO");
 		}
 

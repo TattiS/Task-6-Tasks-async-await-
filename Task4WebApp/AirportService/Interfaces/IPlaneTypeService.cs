@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using DTOLibrary.DTOs;
 
 namespace AirportService.Interfaces
 {
-    interface IPlaneTypeService
+	interface IPlaneTypeService
 	{
-		void CreatePlaneType(PlaneTypeDTO planeType);
-		PlaneTypeDTO GetPlaneTypeById(int id);
-		List<PlaneTypeDTO> GetPlaneTypes();
-		void UpdateType(PlaneTypeDTO planeType);
-		void DeletePlaneType(int id);
+		Task<PlaneTypeDTO> CreatePlaneType(PlaneTypeDTO planeType);
+		Task<PlaneTypeDTO> GetPlaneTypeById(int id);
+		Task<List<PlaneTypeDTO>> GetPlaneTypes();
+		Task<PlaneTypeDTO> UpdateType(PlaneTypeDTO planeType);
+		Task<int> DeletePlaneType(int id);
 	}
 }

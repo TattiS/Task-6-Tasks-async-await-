@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using AirportService.Interfaces;
 using AutoMapper;
@@ -11,12 +10,12 @@ using DTOLibrary.DTOs;
 
 namespace AirportService.Services
 {
-    public class AsyncTicketService:IAsyncTicketService
+	public class TicketService:ITicketService
     {
 		private static IAsyncUOW unit;
 		private static IMapper mapper;
 
-		public AsyncTicketService(AsyncUnitOfWork unitOfWork)
+		public TicketService(AsyncUnitOfWork unitOfWork)
 		{
 			unit = unitOfWork;
 			if (mapper == null)
@@ -84,6 +83,10 @@ namespace AirportService.Services
 		{
 			var flights = await unit.FlightsRepo.GetEntities(includeProperties: "Tickets", filter:(p => p.Id == flightId));
 			var tickets = flights.Find(p => p.Id==flightId).Tickets;
+			if (tickets == null && tickets.Count <= 0)
+			{
+				throw new ArgumentOutOfRangeException(nameof(tickets));
+			}
 			return mapper.Map<List<Ticket>, List<TicketDTO>>(tickets) ?? throw new AutoMapperMappingException("Error: Can't map the Ticket into TicketDTO");
 		}
 

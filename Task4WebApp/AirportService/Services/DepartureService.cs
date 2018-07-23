@@ -10,12 +10,12 @@ using DTOLibrary.DTOs;
 
 namespace AirportService.Services
 {
-	public class AsyncDepartureService:IAsyncDepartureService
+	public class DepartureService:IDepartureService
     {
 		private static IAsyncUOW unit;
 		private static IMapper mapper;
 
-		public AsyncDepartureService(AsyncUnitOfWork unitOfWork)
+		public DepartureService(AsyncUnitOfWork unitOfWork)
 		{
 			unit = unitOfWork;
 			if (mapper == null)
@@ -60,7 +60,7 @@ namespace AirportService.Services
 			Departure departure = await unit.DeparturesRepo.GetEntityById(id);
 			if (departure == null)
 			{
-				return null;
+				throw new ArgumentOutOfRangeException(nameof(departure));
 			}
 			return mapper.Map<Departure, DepartureDTO>(departure) ?? throw new AutoMapperMappingException("Error: Can't map the departure into departureDTO");
 		}
