@@ -59,8 +59,11 @@ namespace DALProject.Repositories
 		}
 		public virtual async Task<TEntity> Insert(TEntity entity)
 		{
-			 await dataSet.AddAsync(entity);
-			return entity;
+
+				await dataSet.AddAsync(entity);
+								
+				return entity;
+			
 		}
 
 		public virtual async Task<TEntity> Update(TEntity entityToUpdate)

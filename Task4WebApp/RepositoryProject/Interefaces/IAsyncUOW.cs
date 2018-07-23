@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using DALProject.Models;
+using DALProject.Repositories;
 
 namespace DALProject.Interefaces
 {
@@ -10,7 +11,7 @@ namespace DALProject.Interefaces
 		IAsyncRepository<Stewardess> StewardessesRepo { get; }
 		IAsyncRepository<Pilot> PilotsRepo { get; }
 		IAsyncRepository<PlaneType> PlaneTypesRepo { get; }
-		IAsyncRepository<Crew> CrewRepo { get; }
+		AsyncCrewRepository CrewRepo { get; }
 		Task<int> SaveChangesAsync();
 	}
 }
