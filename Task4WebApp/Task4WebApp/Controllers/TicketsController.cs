@@ -37,13 +37,13 @@ namespace Task4WebApp.Controllers
 			}
 		}
 
-        // GET: api/Tickets/5
-        [HttpGet("flight-id/{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
+		// GET: api/Tickets/5
+		[HttpGet("{id}")]
+		public async Task<IActionResult> Get(int id)
+		{
 			try
 			{
-				var ticket = await this.airport.GetTicketsByFlightId(id);
+				var ticket = await this.airport.GetTicketById(id);
 				if (ticket == null)
 				{
 					return NotFound();
@@ -56,9 +56,31 @@ namespace Task4WebApp.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
-        
-        // POST: api/Tickets
-        [HttpPost]
+
+
+		//      // GET: api/Tickets/5
+		//      [HttpGet("flight-id/{id}")]
+		//      public async Task<IActionResult> Get(int id)
+		//      {
+		//	try
+		//	{
+		//		var ticket = await this.airport.GetTicketsByFlightId(id);
+		//		if (ticket == null)
+		//		{
+		//			return NotFound();
+		//		}
+		//		return Ok(ticket);
+		//	}
+		//	catch (System.Exception ex)
+		//	{
+
+		//		return BadRequest(ex.Message);
+		//	}
+		//}
+
+
+		// POST: api/Tickets
+		[HttpPost]
         public async Task<IActionResult> Post([FromBody]TicketDTO value)
         {
 			try
