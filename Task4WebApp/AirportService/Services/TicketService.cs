@@ -89,7 +89,17 @@ namespace AirportService.Services
 			}
 			return mapper.Map<List<Ticket>, List<TicketDTO>>(tickets) ?? throw new AutoMapperMappingException("Error: Can't map the Ticket into TicketDTO");
 		}
-
+		public async Task<TicketDTO>GetTicketById(int id)
+		{
+			var flights = await unit.FlightsRepo.GetEntities(includeProperties: "Tickets");
+			var tickets = flights.Find(p => p.Tickets.Find(l=>l.Id==id) != null).Tickets;
+			Ticket ticket = tickets.Find(l => l.Id == id);
+			if (ticket == null )
+			{
+				throw new ArgumentOutOfRangeException(nameof(ticket));
+			}
+			return mapper.Map<Ticket, TicketDTO>(ticket) ?? throw new AutoMapperMappingException("Error: Can't map the Ticket into TicketDTO");
+		}
 		public async Task<List<TicketDTO>> UpdateTicket(TicketDTO value)
 		{
 			if (value != null)

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Cors;
 
 namespace Task4WebApp
 {
@@ -32,8 +33,10 @@ namespace Task4WebApp
 				.AddScoped<PlaneService>()
 				.AddScoped<PlaneTypeService>()
 				.AddScoped<StewardessService>()
-				.AddScoped<TicketService>();
+				.AddScoped<TicketService>()
+				.AddCors();
 				
+
 			services.AddMvc();
 			
 
@@ -47,8 +50,15 @@ namespace Task4WebApp
             {
                 app.UseDeveloperExceptionPage();
             }
+			
+			app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowCredentials().AllowAnyHeader().AllowAnyMethod());
+			using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+			{
+				var context = scope.ServiceProvider.GetService<MainDBContext>();
+				//context.EnsureDatabaseSeeded();
+			}
 
-            app.UseMvc();
+				app.UseMvc();
         }
     }
 }
